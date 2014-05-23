@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+    <title>Mirror</title>
+</head>
+<body>
+    <video autoplay></video>
+
+    <script type="text/javascript">
+        (function () {
+            navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+            navigator.getUserMedia({ audio: true, video: true }, function(stream){
+                document.querySelector('video').src = URL.createObjectURL(stream);
+            }, function (err) {
+                console.log(err);
+            });
+        })();
+</script>
+</body>
+</html>
