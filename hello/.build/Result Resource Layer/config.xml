@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/hello" version="1.0.0" viewmodes="maximized">
-    <tizen:application id="obMnp8feuR.hello" package="obMnp8feuR" required_version="2.2"/>
-    <content src="index.html"/>
-    <feature name="http://tizen.org/feature/screen.size.normal.320.320"/>
-    <icon src="icon.png"/>
-    <name>hello</name>
-    <tizen:setting hwkey-event="enable"/>
-</widget>
