@@ -2,12 +2,20 @@
 <html>
 <head>
     <title>Mirror</title>
+    <style type="text/css">
+        .sepia {
+            -webkit-filter: sepia(1);
+        }
+    </style>
 </head>
 <body>
-    <video autoplay></video>
+    <video id="video" autoplay></video>
 
     <script type="text/javascript">
         (function () {
+            setTimeout(function(){
+                document.querySelector('video').classList.add('sepia');
+            }, 5000);
             navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
             navigator.getUserMedia({ audio: true, video: true }, function(stream){
                 document.querySelector('video').src = URL.createObjectURL(stream);
