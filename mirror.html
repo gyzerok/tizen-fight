@@ -16,7 +16,8 @@
             setTimeout(function(){
                 document.querySelector('video').classList.add('sepia');
             }, 5000);
-            navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
             navigator.getUserMedia({ audio: true, video: true }, function(stream){
                 document.querySelector('video').src = URL.createObjectURL(stream);
             }, function (err) {
