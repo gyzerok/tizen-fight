@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>fist</title>
+</head>
+<img id="face" src="./face.jpg" style="width:700px">
+<img id="fist" src="./fist.png" style="width:400px;position:absolute;left:-200;bottom:-150">
+<audio>
+  <source src="hit-sound.mp3" type="audio/mp3">
+</audio>
+
+<script type="text/javascript">
+var fist = document.querySelector('#fist'); 
+var audio = document.querySelector('audio')
+
+window.addEventListener('keypress', function (e) { 
+    if (e.keyCode === 13) { 
+        fist.style.bottom = -10;
+        fist.style.left = 0;
+        
+        audio.pause();audio.currentTime = 0;audio.play()
+        setTimeout(function () {
+            fist.style.bottom = -150;
+            fist.style.left = -200;
+        }, 500) } 
+    });
+</script>
+
+</html>

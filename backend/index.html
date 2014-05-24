@@ -1,0 +1,79 @@
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="connect-screen" style="display:none">
+        <h1>Join the Fight!</h1>
+        username: <input id="username" type="text">
+        <button id="connect">connect</button>
+    </div>
+    <div id="user-list-screen" style="display:none">
+        <h1>User List</h1>
+        <ul id="users"></ul>
+    </div>
+    <div id="connecting-screen" style="display:none">connecting...</div>
+    <div id="fight-request-screen" style="display:none">
+        <h1>You are under attack, <span id="attacking-user"></span> wants to fight!</h1>
+        <button id="accept-request">accept</button>
+    </div>
+    <div id="fight-screen" style="display:none">
+        <div id="you">
+            Your health: <p class="health"></p>
+        </div>
+        <div id="enemy">
+            Enemy health: <p class="health"></p>
+        </div>
+        hit strength: <input id="hit-strength" type="text">
+        <button id="hit">hit</button>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:8080');
+        var username;
+
+        socket.on('connect', function () {
+            $('#connect-screen').show();
+        });
+
+        $('#connect').on('click', function () {
+            username = $('#username').val();
+
+            socket.emit('handshake', { username: username });
+            $('#connect-screen').hide();
+            $('#user-list-screen').show();
+        });
+
+        $('#users').on('click', 'li',function () {
+            socket.emit('fight-request', $(this).text());
+            $('#user-list-screen').hide();
+            $('#connecting-screen').show();
+        });
+
+        socket.on('user-list', function (users) {
+            $('#users').empty();
+            for (var i = 0; i < users.length; i++) {
+                $('#users').append('<li>' + users[i] + '</li>');
+            }
+        });
+
+        socket.on('fight-request', function (user) {
+            $('#user-list-screen').hide();
+            $('#attacking-user').html(user);
+            $('#fight-request-screen').show();
+
+            $('#accept-request').one('click', function () {
+                socket.emit('accept-request', user);
+            });
+        });
+
+        socket.on('accept-request', function (user) {
+            $('#connecting-screen').hide();
+            
+            $('#fight-screen').show();
+        });
+    </script>
+</body>
+</html>
