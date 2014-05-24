@@ -31,6 +31,11 @@ public class UserListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void fill(ArrayList<String> list) {
+        mItems = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public String getItem(int position) {
         return mItems.get(position);

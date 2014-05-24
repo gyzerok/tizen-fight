@@ -27,7 +27,8 @@ public class MyActivity extends Activity {
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Ask server for connect
+                Server.getInstance().connect(mIpEdit.getText().toString(), mNicknameEdit.getText().toString());
+                startActivity(new Intent(MyActivity.this, UserListActivity.class));
             }
         });
     }

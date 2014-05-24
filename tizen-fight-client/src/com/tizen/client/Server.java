@@ -23,6 +23,8 @@ public class Server implements IOCallback {
     private static final int DISCONNECTED = 1;
     private static final int USER_LIST = 2;
 
+    private static Server instance = null;
+
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -38,6 +40,13 @@ public class Server implements IOCallback {
             }
         }
     };
+
+    private Server() {}
+
+    public static Server getInstance() {
+        if (instance == null) instance = new Server();
+        return instance;
+    }
 
     public void connect(String url, String nickname) {
         try {
