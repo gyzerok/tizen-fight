@@ -27,7 +27,8 @@
         hit strength: <input id="hit-strength" type="text">
         <button id="hit">hit</button>
     </div>
-
+    <div id="win-screen" style="display:none"><h1>You win!</h1></div>
+    <div id="loose-screen" style="display:none"><h1>You loose!</h1></div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -52,6 +53,10 @@
             $('#connecting-screen').show();
         });
 
+        $('#hit').on('click', function () {
+            socket.emit('hit', $('#hit-strength').val());
+        });
+
         socket.on('user-list', function (users) {
             $('#users').empty();
             for (var i = 0; i < users.length; i++) {
@@ -66,13 +71,32 @@
 
             $('#accept-request').one('click', function () {
                 socket.emit('accept-request', user);
+                $('#fight-request-screen').hide();
+                $('#fight-screen').show();
             });
         });
 
         socket.on('accept-request', function (user) {
             $('#connecting-screen').hide();
-            
             $('#fight-screen').show();
+        });
+
+        socket.on('your-health', function (health) {
+            $('#you .health').html(health);
+        });
+
+        socket.on('enemy-health', function (health) {
+            $('#enemy .health').html(health);
+        });
+
+        socket.on('loose', function () {
+            $('#fight-screen').hide();
+            $('#loose-screen').show();
+        });
+
+        socket.on('win', function () {
+            $('#fight-screen').hide();
+            $('#win-screen').show();
         });
     </script>
 </body>

@@ -26,11 +26,15 @@ function createFight(sourceUser, targetUser) {
     user: targetUser,
     health: 100
   };
+  users[sourceUser].socket.emit('your-health', 100);
+  users[sourceUser].socket.emit('enemy-health', 100);
 
   users[targetUser].fight = {
     user: sourceUser,
     health: 100
   };
+  users[targetUser].socket.emit('your-health', 100);
+  users[targetUser].socket.emit('enemy-health', 100);
 }
 
 io.sockets.on('connection', function (socket) {
