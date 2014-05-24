@@ -18,26 +18,42 @@ public class UserListActivity extends ListActivity {
 
     private UserListAdapter mAdapter;
 
+    private BroadcastReceiver mReceiver;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(USER_LIST_INTENT);
-        intentFilter.addAction(USER_CONNECTED_INTENT);
-        intentFilter.addAction(USER_DISCONNECTED_INTENT);
-
-        registerReceiver(new BroadcastReceiver() {
+        mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(USER_LIST_INTENT)) updateList(intent);
                 if (intent.getAction().equals(USER_CONNECTED_INTENT)) onUserConnected(intent);
                 if (intent.getAction().equals(USER_DISCONNECTED_INTENT)) onUserDisconnected(intent);
             }
-        }, intentFilter);
+        };
 
         mAdapter = new UserListAdapter(getApplicationContext());
         getListView().setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(USER_LIST_INTENT);
+        intentFilter.addAction(USER_CONNECTED_INTENT);
+        intentFilter.addAction(USER_DISCONNECTED_INTENT);
+
+        registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        unregisterReceiver(mReceiver);
+
+        super.onPause();
     }
 
     @Override

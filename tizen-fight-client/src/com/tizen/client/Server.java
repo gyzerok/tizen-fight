@@ -1,5 +1,6 @@
 package com.tizen.client;
 
+import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -8,12 +9,13 @@ import io.socket.IOAcknowledge;
 import io.socket.IOCallback;
 import io.socket.SocketIO;
 import io.socket.SocketIOException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 
-public class Server implements IOCallback {
+public class Server extends Service implements IOCallback {
 
     private final String TAG = "tizen-fight";
 
@@ -35,7 +37,7 @@ public class Server implements IOCallback {
                     // TODO: ?
                     break;
                 case USER_LIST:
-                    // TODO: Send user-list update Intent
+                    broadcastUserList();
                     break;
             }
         }
@@ -104,5 +106,9 @@ public class Server implements IOCallback {
         Message msg = mHandler.obtainMessage(what, args[0]);
         mHandler.sendMessage(msg);
         Log.i(TAG, "Server triggered event '" + event + "'");
+    }
+
+    public void broadcastUserList(JSONArray list) {
+
     }
 }
