@@ -13,5 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".UserListActivity" />
+        <activity android:name=".GameActivity" />
     </application>
 </manifest>

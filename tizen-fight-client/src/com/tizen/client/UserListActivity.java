@@ -22,6 +22,11 @@ public class UserListActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(USER_LIST_INTENT);
+        intentFilter.addAction(USER_CONNECTED_INTENT);
+        intentFilter.addAction(USER_DISCONNECTED_INTENT);
+
         registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -29,7 +34,7 @@ public class UserListActivity extends ListActivity {
                 if (intent.getAction().equals(USER_CONNECTED_INTENT)) onUserConnected(intent);
                 if (intent.getAction().equals(USER_DISCONNECTED_INTENT)) onUserDisconnected(intent);
             }
-        }, new IntentFilter(USER_LIST_INTENT));
+        }, intentFilter);
 
         mAdapter = new UserListAdapter(getApplicationContext());
         getListView().setAdapter(mAdapter);
