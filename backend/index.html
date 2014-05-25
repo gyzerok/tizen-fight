@@ -68,12 +68,12 @@
             $('#fight-screen').show();
         });
 
-        socket.on('your-health', function (health) {
-            $('#you .health').html(health);
+        socket.on('your-health', function (data) {
+            $('#you .health').html(data.health);
         });
 
-        socket.on('enemy-health', function (health) {
-            $('#enemy .health').html(health);
+        socket.on('enemy-health', function (data) {
+            $('#enemy .health').html(data.health);
         });
 
         socket.on('loose', function () {

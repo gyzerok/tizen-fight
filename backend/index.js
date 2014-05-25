@@ -36,10 +36,12 @@ function createFight(sourceUser, targetUser) {
 
   users[targetUser].socket.emit('new-fight');
   users[sourceUser].socket.emit('new-fight');
-  users[targetUser].socket.emit('your-health', 100);
-  users[targetUser].socket.emit('enemy-health', 100);
-  users[sourceUser].socket.emit('your-health', 100);
-  users[sourceUser].socket.emit('enemy-health', 100);
+  users[targetUser].socket.emit('your-health', { health: '100' });
+  users[targetUser].socket.emit('enemy-health', { health: '100' });
+  users[sourceUser].socket.emit('your-health', { health: '100' });
+  users[sourceUser].socket.emit('enemy-health', { health: '100' });
+
+  console.log('[new fight] ' + sourceUser + ' vs ' + targetUser);
 }
 
 io.sockets.on('connection', function (socket) {
@@ -64,13 +66,18 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('hit', function (data) {
-    if (users[username].fight) {
+    console.log('[hit]', data);
+
+    if (users[username] && users[username].fight) {
       var targetUser = users[username].fight.user;
+
+      if (!users[targetUser]) return;
+
       users[targetUser].fight.health -= data / 1000;
 
       if (users[targetUser].fight.health > 0) {
-        users[targetUser].socket.emit('your-health', users[targetUser].fight.health);
-        users[username].socket.emit('enemy-health', users[targetUser].fight.health);
+        users[targetUser].socket.emit('your-health', { health: users[targetUser].fight.health.toString() });
+        users[username].socket.emit('enemy-health', { health: users[targetUser].fight.health.toString() });
       } else {
         users[targetUser].socket.emit('loose');
         users[username].socket.emit('win');
