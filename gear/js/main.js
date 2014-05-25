@@ -132,7 +132,7 @@ $(window).load(function(){
             tizen.application.getCurrentApplication().exit();
     });
 	
-	connect();
+	//connect();
 });
 
 window.addEventListener('devicemotion', function (e) {
