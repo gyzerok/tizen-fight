@@ -13,14 +13,33 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".UserListActivity" />
-        <activity android:name=".GameActivity" />
+        <activity android:name=".UserListActivity"/>
+        <activity android:name=".GameActivity"/>
         <service
                 android:name=".ServerService"
-                android:enabled="true" >
+                android:enabled="true">
             <intent-filter>
-                <action android:name="com.tizen.client.SERVER_SERVICE" />
+                <action android:name="com.tizen.client.SERVER_SERVICE"/>
             </intent-filter>
         </service>
+
+        <service
+                android:name=".HelloAccessoryProviderService"
+                android:enabled="true">
+        </service>
+
+        <receiver android:name="com.samsung.android.sdk.accessory.ServiceConnectionIndicationBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.accessory.service.action.ACCESSORY_SERVICE_CONNECTION_IND"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.samsung.android.sdk.accessory.RegisterUponInstallReceiver">
+            <intent-filter>
+                <action android:name="android.accessory.device.action.REGISTER_AFTER_INSTALL"/>
+            </intent-filter>
+        </receiver>
+
+
+        <meta-data android:name="AccessoryServicesLocation" android:value="/res/xml/accessoryservices.xml"/>
     </application>
 </manifest>
