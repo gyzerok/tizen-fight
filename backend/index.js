@@ -83,4 +83,4 @@ io.sockets.on('connection', function (socket) {
   });
 });
 
-app.listen(8080);
+app.listen(Number(process.env.PORT || 8080));
