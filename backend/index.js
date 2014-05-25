@@ -3,6 +3,8 @@ var io = require('socket.io').listen(app);
 var fs = require('fs');
 var users = {};
 
+io.set('log level', 1);
+
 function handler(req, res) {
   fs.readFile(__dirname + '/index.html', function (err, data) {
     if (err) {
@@ -44,6 +46,9 @@ io.sockets.on('connection', function (socket) {
     username = data.username;
     users[username] = { socket: socket };
     updateUserList(users);
+
+    console.log('User ' + username + ' joined the room');
+    console.log('User list: ', Object.keys(users));
   });
 
   socket.on('disconnect', function () {
