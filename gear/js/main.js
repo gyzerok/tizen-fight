@@ -6,7 +6,7 @@ var accelerationEvents = [];
 var fight = false;
 
 function onerror(err) {
-	console.log("err [" + err.name + "] msg[" + err.message + "]");
+	console.log("[onerror] err [" + err.name + "] msg[" + err.message + "]");
 }
 
 var agentCallback = {
@@ -31,10 +31,10 @@ var peerAgentFindCallback = {
 				alert("Not expected app!! : " + peerAgent.appName);
 			}
 		} catch (err) {
-			console.log("exception [" + err.name + "] msg[" + err.message + "]");
+			console.log("[onpeeragentfound] exception [" + err.name + "] msg[" + err.message + "]");
 		}
 	},
-	onerror: onerror
+	onerror: function () { console.log("[onpeeragenterror]"); }
 }
 
 function onsuccess(agents) {
@@ -48,7 +48,7 @@ function onsuccess(agents) {
 			alert("Not found SAAgent!!");
 		}
 	} catch (err) {
-		console.log("exception [" + err.name + "] msg[" + err.message + "]");
+		console.log("[onsuccess] exception [" + err.name + "] msg[" + err.message + "]");
 	}
 }
 
@@ -60,7 +60,7 @@ function connect() {
 	try {
 		webapis.sa.requestSAAgent(onsuccess, onerror);
 	} catch(err) {
-		console.log("exception [" + err.name + "] msg[" + err.message + "]");
+		console.log("[connect] exception [" + err.name + "] msg[" + err.message + "]");
 	}
 }
 
@@ -72,7 +72,7 @@ function disconnect() {
 			createHTML("closeConnection");
 		}
 	} catch(err) {
-		console.log("exception [" + err.name + "] msg[" + err.message + "]");
+		console.log("[disconnect] exception [" + err.name + "] msg[" + err.message + "]");
 	}
 }
 
@@ -97,7 +97,7 @@ function fetch() {
 		SASocket.setDataReceiveListener(onreceive);
 		SASocket.sendData(CHANNELID, "Hello Accessory!");
 	} catch(err) {
-		console.log("exception [" + err.name + "] msg[" + err.message + "]");
+		console.log("[fetch] exception [" + err.name + "] msg[" + err.message + "]");
 	}
 }
 
