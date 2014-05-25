@@ -131,6 +131,8 @@ $(window).load(function(){
         if(e.keyName == "back")
             tizen.application.getCurrentApplication().exit();
     });
+	
+	connect();
 });
 
 window.addEventListener('devicemotion', function (e) {

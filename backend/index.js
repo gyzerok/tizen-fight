@@ -28,15 +28,18 @@ function createFight(sourceUser, targetUser) {
     user: targetUser,
     health: 100
   };
-  users[sourceUser].socket.emit('your-health', 100);
-  users[sourceUser].socket.emit('enemy-health', 100);
 
   users[targetUser].fight = {
     user: sourceUser,
     health: 100
   };
+
+  users[targetUser].socket.emit('new-fight');
+  users[sourceUser].socket.emit('new-fight');
   users[targetUser].socket.emit('your-health', 100);
   users[targetUser].socket.emit('enemy-health', 100);
+  users[sourceUser].socket.emit('your-health', 100);
+  users[sourceUser].socket.emit('enemy-health', 100);
 }
 
 io.sockets.on('connection', function (socket) {
@@ -57,11 +60,6 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('fight-request', function (user) {
-    users[user].socket.emit('fight-request', username);
-  });
-
-  socket.on('accept-request', function (user) {
-    users[user].socket.emit('accept-request', username);
     createFight(user, username);
   });
 

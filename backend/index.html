@@ -50,7 +50,6 @@
         $('#users').on('click', 'li',function () {
             socket.emit('fight-request', $(this).text());
             $('#user-list-screen').hide();
-            $('#connecting-screen').show();
         });
 
         $('#hit').on('click', function () {
@@ -64,20 +63,8 @@
             }
         });
 
-        socket.on('fight-request', function (user) {
+        socket.on('new-fight', function (user) {
             $('#user-list-screen').hide();
-            $('#attacking-user').html(user);
-            $('#fight-request-screen').show();
-
-            $('#accept-request').one('click', function () {
-                socket.emit('accept-request', user);
-                $('#fight-request-screen').hide();
-                $('#fight-screen').show();
-            });
-        });
-
-        socket.on('accept-request', function (user) {
-            $('#connecting-screen').hide();
             $('#fight-screen').show();
         });
 
