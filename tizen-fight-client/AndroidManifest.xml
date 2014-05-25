@@ -15,5 +15,12 @@
         </activity>
         <activity android:name=".UserListActivity" />
         <activity android:name=".GameActivity" />
+        <service
+                android:name=".ServerService"
+                android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.tizen.client.SERVER_SERVICE" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

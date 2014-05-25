@@ -1,24 +1,37 @@
 package com.tizen.client;
 
 import android.app.ListActivity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Messenger;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class UserListActivity extends ListActivity {
 
-    private static final String USER_LIST_INTENT = "user-list";
-    private static final String USER_CONNECTED_INTENT = "user-connected";
-    private static final String USER_DISCONNECTED_INTENT = "user-disconnected";
+    public static final String USER_LIST_INTENT = "user-list";
 
     private UserListAdapter mAdapter;
 
+    private final Intent mServerServiceIntent = new Intent(ServerService.SERVER_SERVICE);
+
     private BroadcastReceiver mReceiver;
+
+
+    private Messenger mMessenger;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mMessenger = new Messenger(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mMessenger = null;
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,9 +40,7 @@ public class UserListActivity extends ListActivity {
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(USER_LIST_INTENT)) updateList(intent);
-                if (intent.getAction().equals(USER_CONNECTED_INTENT)) onUserConnected(intent);
-                if (intent.getAction().equals(USER_DISCONNECTED_INTENT)) onUserDisconnected(intent);
+                if (intent.getAction().equals(USER_LIST_INTENT)) onUserListEvent(intent);
             }
         };
 
@@ -41,16 +52,18 @@ public class UserListActivity extends ListActivity {
     public void onResume() {
         super.onResume();
 
+        bindService(mServerServiceIntent, mConnection,
+                Context.BIND_AUTO_CREATE);
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(USER_LIST_INTENT);
-        intentFilter.addAction(USER_CONNECTED_INTENT);
-        intentFilter.addAction(USER_DISCONNECTED_INTENT);
 
         registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
     public void onPause() {
+        unbindService(mConnection);
         unregisterReceiver(mReceiver);
 
         super.onPause();
@@ -63,15 +76,7 @@ public class UserListActivity extends ListActivity {
         Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
     }
 
-    public void updateList(Intent intent) {
+    public void onUserListEvent(Intent intent) {
         mAdapter.fill(intent.getStringArrayListExtra("userList"));
-    }
-
-    public void onUserConnected(Intent intent) {
-        mAdapter.add(intent.getStringExtra("nickname"));
-    }
-
-    public void onUserDisconnected(Intent intent) {
-        mAdapter.remove(intent.getStringExtra("nickname"));
     }
 }

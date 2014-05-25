@@ -1,8 +1,6 @@
 *.idea
 .build
 .settings
-<<<<<<< HEAD
 backend/node_modules/
-=======
 platforms
->>>>>>> 53437ea1d40c84078b97703a37a6bd93335d0b58
+.DS_Store
